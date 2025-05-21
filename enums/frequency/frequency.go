@@ -5,6 +5,7 @@ type Type uint8
 const (
 	DAILY Type = iota + 1
 	WEEKLY
+	BIWEEKLY
 	MONTHLY
 	ANNUALLY
 )
@@ -13,6 +14,7 @@ const (
 var toValue = map[Type]int{
 	DAILY:    365,
 	WEEKLY:   52,
+	BIWEEKLY: 26,
 	MONTHLY:  12,
 	ANNUALLY: 1,
 }

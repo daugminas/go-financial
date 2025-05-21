@@ -10,9 +10,9 @@ import (
 
 	"github.com/shopspring/decimal"
 
+	"github.com/daugminas/go-financial/enums/interesttype"
 	"github.com/go-echarts/go-echarts/v2/charts"
 	"github.com/go-echarts/go-echarts/v2/opts"
-	"github.com/razorpay/go-financial/enums/interesttype"
 )
 
 // Amortization struct holds the configuration and financial details.
@@ -55,7 +55,7 @@ func (a Amortization) GenerateTable() ([]Row, error) {
 		row.StartDate = a.Config.startDates[i-1]
 		row.EndDate = a.Config.endDates[i-1]
 
-		payment := a.Financial.GetPayment(*a.Config)
+		payment := a.Financial.GetPayment(*a.Config, i)
 		principalPayment := a.Financial.GetPrincipal(*a.Config, i)
 		interestPayment := a.Financial.GetInterest(*a.Config, i)
 		if a.Config.EnableRounding {

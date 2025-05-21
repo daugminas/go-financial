@@ -16,6 +16,6 @@ func (r *Reducing) GetInterest(config Config, period int64) decimal.Decimal {
 }
 
 // GetPayment returns the periodic payment to be done for a loan depending on config.
-func (r *Reducing) GetPayment(config Config) decimal.Decimal {
+func (r *Reducing) GetPayment(config Config, _ int64) decimal.Decimal {
 	return Pmt(config.getInterestRatePerPeriodInDecimal(), config.periods, config.AmountBorrowed, decimal.Zero, config.PaymentPeriod)
 }

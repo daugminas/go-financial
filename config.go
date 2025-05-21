@@ -5,18 +5,18 @@ import (
 
 	"github.com/shopspring/decimal"
 
-	"github.com/razorpay/go-financial/enums/paymentperiod"
+	"github.com/daugminas/go-financial/enums/paymentperiod"
 
-	"github.com/razorpay/go-financial/enums/interesttype"
+	"github.com/daugminas/go-financial/enums/interesttype"
 
-	"github.com/razorpay/go-financial/enums/frequency"
+	"github.com/daugminas/go-financial/enums/frequency"
 )
 
 // Config is used to store details used in generation of amortization table.
 type Config struct {
 	StartDate              time.Time          // Starting day of the amortization schedule(inclusive)
 	EndDate                time.Time          // Ending day of the amortization schedule(inclusive)
-	Frequency              frequency.Type     // Frequency enum with DAILY, WEEKLY, MONTHLY or ANNUALLY
+	Frequency              frequency.Type     // Frequency enum with DAILY, WEEKLY, BIWEEKLY, MONTHLY or ANNUALLY
 	AmountBorrowed         decimal.Decimal    // Amount Borrowed
 	InterestType           interesttype.Type  // InterestType enum with FLAT or REDUCING value.
 	Interest               decimal.Decimal    // Interest in basis points
