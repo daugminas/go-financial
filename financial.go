@@ -1,6 +1,6 @@
 package gofinancial
 
-import "github.com/shopspring/decimal"
+import "github.com/greatcloak/decimal"
 
 // Financial interface defines the methods to be over ridden for different financial use cases.
 type Financial interface {

@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/shopspring/decimal"
+	"github.com/greatcloak/decimal"
 
 	"github.com/go-echarts/go-echarts/v2/charts"
 
@@ -81,18 +81,21 @@ func Test_amortization_GenerateTable(t *testing.T) {
 				t.Fatalf("length mismatch of rows generate, want=%v, got=%v", len(tt.want), len(got))
 			}
 			for idx := range got {
-				if err := verifyRow(t, got[idx], tt.want[idx]); err != nil {
+				// if err := verifyRow(t, got[idx], tt.want[idx]); err != nil {
+				if err := verifyRow(got[idx], tt.want[idx]); err != nil {
 					t.Fatal(err)
 				}
 			}
-			if err := principalCheck(t, got, tt.fields.Config.AmountBorrowed); err != nil {
+			// if err := principalCheck(t, got, tt.fields.Config.AmountBorrowed); err != nil {
+			if err := principalCheck(got, tt.fields.Config.AmountBorrowed); err != nil {
 				t.Fatal(err)
 			}
 		})
 	}
 }
 
-func principalCheck(t *testing.T, rows []Row, actualPrincipal decimal.Decimal) error {
+// func principalCheck(t *testing.T, rows []Row, actualPrincipal decimal.Decimal) error {
+func principalCheck(rows []Row, actualPrincipal decimal.Decimal) error {
 	expectedPrincipal := decimal.Zero
 	dPrecision := decimal.NewFromFloat(precision)
 	for _, row := range rows {
@@ -104,7 +107,8 @@ func principalCheck(t *testing.T, rows []Row, actualPrincipal decimal.Decimal) e
 	return nil
 }
 
-func verifyRow(t *testing.T, actual Row, expected Row) error {
+// func verifyRow(t *testing.T, actual Row, expected Row) error {
+func verifyRow(actual Row, expected Row) error {
 	dPrecision := decimal.NewFromFloat(precision)
 	if err := isAlmostEqual(actual.Principal, expected.Principal, dPrecision); err != nil {
 		return fmt.Errorf("error:%v, principal values are not almost equal. expected:%v, got:%v", err.Error(), expected.Principal, actual.Principal)

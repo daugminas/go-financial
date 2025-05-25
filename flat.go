@@ -1,6 +1,6 @@
 package gofinancial
 
-import "github.com/shopspring/decimal"
+import "github.com/greatcloak/decimal"
 
 // Flat implements financial methods for facilitating a loan use case, following a flat rate of interest.
 type Flat struct{}

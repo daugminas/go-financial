@@ -3,7 +3,7 @@ package gofinancial_test
 import (
 	"time"
 
-	"github.com/shopspring/decimal"
+	"github.com/greatcloak/decimal"
 
 	gofinancial "github.com/daugminas/go-financial"
 	"github.com/daugminas/go-financial/enums/frequency"

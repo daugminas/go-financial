@@ -8,7 +8,7 @@ import (
 	"path"
 	"time"
 
-	"github.com/shopspring/decimal"
+	"github.com/greatcloak/decimal"
 
 	"github.com/daugminas/go-financial/enums/interesttype"
 	"github.com/go-echarts/go-echarts/v2/charts"
