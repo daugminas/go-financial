@@ -71,6 +71,12 @@ func GetPeriodDifference(from time.Time, to time.Time, freq frequency.Type) (int
 			return -1, ErrUnevenEndDate
 		}
 		periods = days / 7
+	case frequency.BIWEEKLY: // update by MS
+		days := int(to.Sub(from).Hours()/24) + 1
+		if days%14 != 0 {
+			return -1, ErrUnevenEndDate
+		}
+		periods = days / 14
 	case frequency.MONTHLY:
 		months, err := getMonthsBetweenDates(from, to)
 		if err != nil {
@@ -96,6 +102,8 @@ func getStartDate(date time.Time, freq frequency.Type, index int) (time.Time, er
 		startDate = date.AddDate(0, 0, index)
 	case frequency.WEEKLY:
 		startDate = date.AddDate(0, 0, 7*index)
+	case frequency.BIWEEKLY: // udpate by MS
+		startDate = date.AddDate(0, 0, 14*index)
 	case frequency.MONTHLY:
 		startDate = date.AddDate(0, index, 0)
 	case frequency.ANNUALLY:
@@ -139,6 +147,9 @@ func getEndDates(date time.Time, freq frequency.Type) (time.Time, error) {
 		nextDate = time.Date(date.Year(), date.Month(), date.Day(), 23, 59, 59, 0, date.Location())
 	case frequency.WEEKLY:
 		date = date.AddDate(0, 0, 6)
+		nextDate = time.Date(date.Year(), date.Month(), date.Day(), 23, 59, 59, 0, date.Location())
+	case frequency.BIWEEKLY: // update by MS
+		date = date.AddDate(0, 0, 13)
 		nextDate = time.Date(date.Year(), date.Month(), date.Day(), 23, 59, 59, 0, date.Location())
 	case frequency.MONTHLY:
 		date = date.AddDate(0, 1, 0).AddDate(0, 0, -1)

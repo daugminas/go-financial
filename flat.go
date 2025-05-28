@@ -17,7 +17,7 @@ func (f *Flat) GetInterest(config Config, period int64) decimal.Decimal {
 	minusOne := decimal.NewFromInt(-1)
 	paidPrincipal := f.GetPrincipal(config, 0).Mul(decimal.NewFromInt(period).Add(minusOne))
 	// return config.getInterestRatePerPeriodInDecimal().Mul(config.AmountBorrowed).Mul(minusOne) // original BS
-	return config.getInterestRatePerPeriodInDecimal().Mul(config.AmountBorrowed.Add(paidPrincipal)).Mul(minusOne) // AmountBorrowed is negative, hence .Add()
+	return config.getInterestRatePerPeriodInDecimal().Mul(config.AmountBorrowed.Add(paidPrincipal)).Mul(minusOne) // AmountBorrowed is negative, hence .Add() // update by MS
 }
 
 // GetPayment returns the periodic payment to be done for a loan depending on config.
@@ -26,7 +26,7 @@ func (f *Flat) GetPayment(config Config, period int64) decimal.Decimal {
 	// minusOne := decimal.NewFromInt(-1)
 	// totalInterest := config.getInterestRatePerPeriodInDecimal().Mul(dPeriod).Mul(config.AmountBorrowed)
 	// Payment := totalInterest.Add(config.AmountBorrowed).Mul(minusOne).Div(dPeriod)
-	interest := f.GetInterest(config, period)
-	principal := f.GetPrincipal(config, period)
+	interest := f.GetInterest(config, period)   // update by MS
+	principal := f.GetPrincipal(config, period) // update by MS
 	return principal.Add(interest)
 }
