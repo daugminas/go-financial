@@ -14,19 +14,20 @@ import (
 
 // Config is used to store details used in generation of amortization table.
 type Config struct {
-	StartDate              time.Time          // Starting day of the amortization schedule(inclusive)
-	EndDate                time.Time          // Ending day of the amortization schedule(inclusive)
-	Frequency              frequency.Type     // Frequency enum with DAILY, WEEKLY, BIWEEKLY, MONTHLY or ANNUALLY
-	AmountBorrowed         decimal.Decimal    // Amount Borrowed
-	InterestType           interesttype.Type  // InterestType enum with FLAT or REDUCING value.
-	Interest               decimal.Decimal    // Interest in basis points
-	PaymentPeriod          paymentperiod.Type // Payment period enum to know whether payment made at the BEGINNING or ENDING of a period
-	EnableRounding         bool               // If enabled, the final values in amortization schedule are rounded
-	RoundingPlaces         int32              // If specified, the final values in amortization schedule are rounded to these many places
-	RoundingErrorTolerance decimal.Decimal    // Any difference in [payment-(principal+interest)] will be adjusted in interest component, upto the RoundingErrorTolerance value specified
-	periods                int64              // derived
-	startDates             []time.Time        // derived
-	endDates               []time.Time        // derived
+	StartDate                time.Time          // Starting day of the amortization schedule(inclusive)
+	EndDate                  time.Time          // Ending day of the amortization schedule(inclusive)
+	Frequency                frequency.Type     // Frequency enum with DAILY, WEEKLY, BIWEEKLY, MONTHLY or ANNUALLY
+	AmountBorrowed           decimal.Decimal    // Amount Borrowed
+	InterestType             interesttype.Type  // InterestType enum with FLAT or REDUCING value.
+	Interest                 decimal.Decimal    // Interest in basis points
+	PaymentPeriod            paymentperiod.Type // Payment period enum to know whether payment made at the BEGINNING or ENDING of a period
+	EnableRounding           bool               // If enabled, the final values in amortization schedule are rounded
+	RoundingPlaces           int32              // If specified, the final values in amortization schedule are rounded to these many places
+	RoundingErrorTolerance   decimal.Decimal    // Any difference in [payment-(principal+interest)] will be adjusted in interest component, upto the RoundingErrorTolerance value specified
+	GeometricMeanForInterest bool               // Use a geometric mean when calculating per period interest (true) (=(1+i)**(1/nper)-1) instead of arithmetic (false) (=i/nper).
+	periods                  int64              // derived
+	startDates               []time.Time        // derived
+	endDates                 []time.Time        // derived
 }
 
 func (c *Config) setPeriodsAndDates() error {
@@ -168,8 +169,12 @@ func (c *Config) getInterestRatePerPeriodInDecimal() decimal.Decimal {
 	freq := decimal.NewFromInt(int64(c.Frequency.Value()))
 	interestInPercent := c.Interest.Div(hundred)
 	InterestInDecimal := interestInPercent.Div(hundred)
-	// InterestPerPeriod := InterestInDecimal.Div(freq) // arithmetic mean of the interest rate per period
-	one := decimal.NewFromInt(1)
-	InterestPerPeriod := one.Add(InterestInDecimal).Pow(one.Div(freq)).Sub(one) // geometric mean of the interest rate per period, more precise when compounding; update by MS
+	var InterestPerPeriod decimal.Decimal
+	if c.GeometricMeanForInterest {
+		one := decimal.NewFromInt(1)
+		InterestPerPeriod = one.Add(InterestInDecimal).Pow(one.Div(freq)).Sub(one) // geometric mean of the interest rate per period, more precise when compounding; update by MS
+	} else {
+		InterestPerPeriod = InterestInDecimal.Div(freq) // arithmetic mean of the interest rate per period
+	}
 	return InterestPerPeriod
 }
