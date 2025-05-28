@@ -168,6 +168,8 @@ func (c *Config) getInterestRatePerPeriodInDecimal() decimal.Decimal {
 	freq := decimal.NewFromInt(int64(c.Frequency.Value()))
 	interestInPercent := c.Interest.Div(hundred)
 	InterestInDecimal := interestInPercent.Div(hundred)
-	InterestPerPeriod := InterestInDecimal.Div(freq)
+	// InterestPerPeriod := InterestInDecimal.Div(freq) // arithmetic mean of the interest rate per period
+	one := decimal.NewFromInt(1)
+	InterestPerPeriod := one.Add(InterestInDecimal).Pow(one.Div(freq)).Sub(one) // geometric mean of the interest rate per period, more precise when compounding; update by MS
 	return InterestPerPeriod
 }
