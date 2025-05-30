@@ -147,7 +147,7 @@ func TestConfig_SetPeriodsAndDates(t *testing.T) {
 				{timeParseUtil(t, "2021-02-17 00:00:00 +0000 UTC"), timeParseUtil(t, "2021-02-23 23:59:59 +0000 UTC")},
 			},
 		},
-		{
+		{ // update by MS
 			name: "bi-weekly same year", fields: fields{getDate(2025, 1, 1), getDate(2025, 7, 29), Frequency.BIWEEKLY}, wantErr: false,
 			wantPeriods: 15, wantDates: []dateGroup{
 				{timeParseUtil(t, "2025-01-01 00:00:00 +0000 UTC"), timeParseUtil(t, "2025-01-14 23:59:59 +0000 UTC")},
@@ -165,9 +165,9 @@ func TestConfig_SetPeriodsAndDates(t *testing.T) {
 				{timeParseUtil(t, "2025-06-18 00:00:00 +0000 UTC"), timeParseUtil(t, "2025-07-01 23:59:59 +0000 UTC")},
 				{timeParseUtil(t, "2025-07-02 00:00:00 +0000 UTC"), timeParseUtil(t, "2025-07-15 23:59:59 +0000 UTC")},
 				{timeParseUtil(t, "2025-07-16 00:00:00 +0000 UTC"), timeParseUtil(t, "2025-07-29 23:59:59 +0000 UTC")},
-			}, // update by MS
+			},
 		},
-		{
+		{ // update by MS
 			name: "bi-weekly different year", fields: fields{getDate(2025, 1, 1), getDate(2026, 2, 24), Frequency.BIWEEKLY}, wantErr: false,
 			wantPeriods: 30, wantDates: []dateGroup{
 				{timeParseUtil(t, "2025-01-01 00:00:00 +0000 UTC"), timeParseUtil(t, "2025-01-14 23:59:59 +0000 UTC")},
@@ -200,7 +200,7 @@ func TestConfig_SetPeriodsAndDates(t *testing.T) {
 				{timeParseUtil(t, "2026-01-14 00:00:00 +0000 UTC"), timeParseUtil(t, "2026-01-27 23:59:59 +0000 UTC")},
 				{timeParseUtil(t, "2026-01-28 00:00:00 +0000 UTC"), timeParseUtil(t, "2026-02-10 23:59:59 +0000 UTC")},
 				{timeParseUtil(t, "2026-02-11 00:00:00 +0000 UTC"), timeParseUtil(t, "2026-02-24 23:59:59 +0000 UTC")},
-			}, // update by MS
+			},
 		},
 		{
 			name: "monthly same year", fields: fields{getDate(2020, 1, 1), getDate(2020, 9, 30), Frequency.MONTHLY}, wantErr: false,
@@ -241,6 +241,36 @@ func TestConfig_SetPeriodsAndDates(t *testing.T) {
 				{timeParseUtil(t, "2021-08-01 00:00:00 +0000 UTC"), timeParseUtil(t, "2021-08-31 23:59:59 +0000 UTC")},
 				{timeParseUtil(t, "2021-09-01 00:00:00 +0000 UTC"), timeParseUtil(t, "2021-09-30 23:59:59 +0000 UTC")},
 				{timeParseUtil(t, "2021-10-01 00:00:00 +0000 UTC"), timeParseUtil(t, "2021-10-31 23:59:59 +0000 UTC")},
+			},
+		},
+		{ // update by MS
+			name: "quarterly several years", fields: fields{getDate(2025, 1, 1), getDate(2031, 3, 31), Frequency.QUARTERLY}, wantErr: false,
+			wantPeriods: 25, wantDates: []dateGroup{
+				{timeParseUtil(t, "2025-01-01 00:00:00 +0000 UTC"), timeParseUtil(t, "2025-03-31 23:59:59 +0000 UTC")},
+				{timeParseUtil(t, "2025-04-01 00:00:00 +0000 UTC"), timeParseUtil(t, "2025-06-30 23:59:59 +0000 UTC")},
+				{timeParseUtil(t, "2025-07-01 00:00:00 +0000 UTC"), timeParseUtil(t, "2025-09-30 23:59:59 +0000 UTC")},
+				{timeParseUtil(t, "2025-10-01 00:00:00 +0000 UTC"), timeParseUtil(t, "2025-12-31 23:59:59 +0000 UTC")},
+				{timeParseUtil(t, "2026-01-01 00:00:00 +0000 UTC"), timeParseUtil(t, "2026-03-31 23:59:59 +0000 UTC")},
+				{timeParseUtil(t, "2026-04-01 00:00:00 +0000 UTC"), timeParseUtil(t, "2026-06-30 23:59:59 +0000 UTC")},
+				{timeParseUtil(t, "2026-07-01 00:00:00 +0000 UTC"), timeParseUtil(t, "2026-09-30 23:59:59 +0000 UTC")},
+				{timeParseUtil(t, "2026-10-01 00:00:00 +0000 UTC"), timeParseUtil(t, "2026-12-31 23:59:59 +0000 UTC")},
+				{timeParseUtil(t, "2027-01-01 00:00:00 +0000 UTC"), timeParseUtil(t, "2027-03-31 23:59:59 +0000 UTC")},
+				{timeParseUtil(t, "2027-04-01 00:00:00 +0000 UTC"), timeParseUtil(t, "2027-06-30 23:59:59 +0000 UTC")},
+				{timeParseUtil(t, "2027-07-01 00:00:00 +0000 UTC"), timeParseUtil(t, "2027-09-30 23:59:59 +0000 UTC")},
+				{timeParseUtil(t, "2027-10-01 00:00:00 +0000 UTC"), timeParseUtil(t, "2027-12-31 23:59:59 +0000 UTC")},
+				{timeParseUtil(t, "2028-01-01 00:00:00 +0000 UTC"), timeParseUtil(t, "2028-03-31 23:59:59 +0000 UTC")},
+				{timeParseUtil(t, "2028-04-01 00:00:00 +0000 UTC"), timeParseUtil(t, "2028-06-30 23:59:59 +0000 UTC")},
+				{timeParseUtil(t, "2028-07-01 00:00:00 +0000 UTC"), timeParseUtil(t, "2028-09-30 23:59:59 +0000 UTC")},
+				{timeParseUtil(t, "2028-10-01 00:00:00 +0000 UTC"), timeParseUtil(t, "2028-12-31 23:59:59 +0000 UTC")},
+				{timeParseUtil(t, "2029-01-01 00:00:00 +0000 UTC"), timeParseUtil(t, "2029-03-31 23:59:59 +0000 UTC")},
+				{timeParseUtil(t, "2029-04-01 00:00:00 +0000 UTC"), timeParseUtil(t, "2029-06-30 23:59:59 +0000 UTC")},
+				{timeParseUtil(t, "2029-07-01 00:00:00 +0000 UTC"), timeParseUtil(t, "2029-09-30 23:59:59 +0000 UTC")},
+				{timeParseUtil(t, "2029-10-01 00:00:00 +0000 UTC"), timeParseUtil(t, "2029-12-31 23:59:59 +0000 UTC")},
+				{timeParseUtil(t, "2030-01-01 00:00:00 +0000 UTC"), timeParseUtil(t, "2030-03-31 23:59:59 +0000 UTC")},
+				{timeParseUtil(t, "2030-04-01 00:00:00 +0000 UTC"), timeParseUtil(t, "2030-06-30 23:59:59 +0000 UTC")},
+				{timeParseUtil(t, "2030-07-01 00:00:00 +0000 UTC"), timeParseUtil(t, "2030-09-30 23:59:59 +0000 UTC")},
+				{timeParseUtil(t, "2030-10-01 00:00:00 +0000 UTC"), timeParseUtil(t, "2030-12-31 23:59:59 +0000 UTC")},
+				{timeParseUtil(t, "2031-01-01 00:00:00 +0000 UTC"), timeParseUtil(t, "2031-03-31 23:59:59 +0000 UTC")},
 			},
 		},
 		{

@@ -16,7 +16,7 @@ import (
 type Config struct {
 	StartDate                time.Time          // Starting day of the amortization schedule(inclusive)
 	EndDate                  time.Time          // Ending day of the amortization schedule(inclusive)
-	Frequency                frequency.Type     // Frequency enum with DAILY, WEEKLY, BIWEEKLY, MONTHLY or ANNUALLY
+	Frequency                frequency.Type     // Frequency enum with DAILY, WEEKLY, BIWEEKLY, MONTHLY, QUARTERLY or ANNUALLY
 	AmountBorrowed           decimal.Decimal    // Amount Borrowed
 	InterestType             interesttype.Type  // InterestType enum with FLAT or REDUCING value.
 	Interest                 decimal.Decimal    // Interest in basis points
@@ -84,6 +84,12 @@ func GetPeriodDifference(from time.Time, to time.Time, freq frequency.Type) (int
 			return -1, err
 		}
 		periods = *months
+	case frequency.QUARTERLY: // update by MS
+		quarters, err := getQuartersBetweenDates(from, to)
+		if err != nil {
+			return -1, err
+		}
+		periods = *quarters
 	case frequency.ANNUALLY:
 		years, err := getYearsBetweenDates(from, to)
 		if err != nil {
@@ -107,6 +113,8 @@ func getStartDate(date time.Time, freq frequency.Type, index int) (time.Time, er
 		startDate = date.AddDate(0, 0, 14*index)
 	case frequency.MONTHLY:
 		startDate = date.AddDate(0, index, 0)
+	case frequency.QUARTERLY: // udpate by MS
+		startDate = date.AddDate(0, index*3, 0)
 	case frequency.ANNUALLY:
 		startDate = date.AddDate(index, 0, 0)
 	default:
@@ -119,6 +127,20 @@ func getMonthsBetweenDates(start time.Time, end time.Time) (*int, error) {
 	count := 0
 	for start.Before(end) {
 		start = start.AddDate(0, 1, 0)
+		count++
+	}
+	finalDate := start.AddDate(0, 0, -1)
+	if !finalDate.Equal(end) {
+		return nil, ErrUnevenEndDate
+	}
+	return &count, nil
+}
+
+// update by MS
+func getQuartersBetweenDates(start time.Time, end time.Time) (*int, error) {
+	count := 0
+	for start.Before(end) {
+		start = start.AddDate(0, 3, 0)
 		count++
 	}
 	finalDate := start.AddDate(0, 0, -1)
@@ -154,6 +176,9 @@ func getEndDates(date time.Time, freq frequency.Type) (time.Time, error) {
 		nextDate = time.Date(date.Year(), date.Month(), date.Day(), 23, 59, 59, 0, date.Location())
 	case frequency.MONTHLY:
 		date = date.AddDate(0, 1, 0).AddDate(0, 0, -1)
+		nextDate = time.Date(date.Year(), date.Month(), date.Day(), 23, 59, 59, 0, date.Location())
+	case frequency.QUARTERLY: // update by MS
+		date = date.AddDate(0, 3, 0).AddDate(0, 0, -1)
 		nextDate = time.Date(date.Year(), date.Month(), date.Day(), 23, 59, 59, 0, date.Location())
 	case frequency.ANNUALLY:
 		date = date.AddDate(1, 0, 0).AddDate(0, 0, -1)

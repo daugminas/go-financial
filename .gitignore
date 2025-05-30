@@ -12,9 +12,11 @@
 *.out
 
 # Dependency directories
- vendor/
+vendor/
 
- # goland configs
- .idea
+# golang configs
+.idea
 
+# .vscode debug
+.vscode/**/*
 
