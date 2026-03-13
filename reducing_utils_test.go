@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/greatcloak/decimal"
+	"github.com/shopspring/decimal"
 
 	"github.com/daugminas/go-financial/enums/paymentperiod"
 )

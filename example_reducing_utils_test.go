@@ -5,7 +5,7 @@ import (
 
 	gofinancial "github.com/daugminas/go-financial"
 	"github.com/daugminas/go-financial/enums/paymentperiod"
-	"github.com/greatcloak/decimal"
+	"github.com/shopspring/decimal"
 )
 
 // If you have a loan of 1,00,000 to be paid after 2 years, with 18% p.a. compounded annually, how much total payment will you have to do each month?

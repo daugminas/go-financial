@@ -1,6 +1,6 @@
 package gofinancial
 
-import "github.com/greatcloak/decimal"
+import "github.com/shopspring/decimal"
 
 // Reducing implements financial methods for facilitating a loan use case, following a reducing rate of interest.
 type Reducing struct{}

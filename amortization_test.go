@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/greatcloak/decimal"
+	"github.com/shopspring/decimal"
 
 	"github.com/go-echarts/go-echarts/v2/charts"
 

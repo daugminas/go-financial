@@ -14,7 +14,7 @@ import (
 	"math"
 
 	"github.com/daugminas/go-financial/enums/paymentperiod"
-	"github.com/greatcloak/decimal"
+	"github.com/shopspring/decimal"
 )
 
 /*

@@ -3,7 +3,7 @@ package gofinancial
 import (
 	"time"
 
-	"github.com/greatcloak/decimal"
+	"github.com/shopspring/decimal"
 
 	"github.com/daugminas/go-financial/enums/paymentperiod"
 
